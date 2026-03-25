@@ -1,65 +1,115 @@
 import streamlit as st
+import base64 # 로고 처리를 위해 추가
+
+# --- 🖼️ [추가] 로고 변환 함수 ---
+def get_base64_of_bin_file(bin_file):
+    try:
+        with open(bin_file, 'rb') as f:
+            return base64.b64encode(f.read()).decode()
+    except:
+        return "" 
+# --------------------------------------------------------
 
 # --- 1. 페이지 기본 설정 ---
-# 카드를 여러 개 나란히 배치하기 위해 넓은 화면(wide)으로 변경합니다.
 st.set_page_config(
-    page_title="통합 업무 포털",
+    page_title="업무 도구 포털",
     page_icon="🏢",
-    layout="wide" 
+    layout="wide" # 카드를 위해 wide 유지
 )
 
+# --- 🎨 [추가] 통합 CSS (제작사 로고 전용 CSS 포함) ---
+st.markdown(
+    """
+    <style>
+    /* 우측 상단 로고 고정 스타일 */
+    .company-logo {
+        position: fixed;
+        top: 70px;      /* 짤리지 않게 내린 위치 유지 */
+        right: 30px;    /* 우측 상단 고정 */
+        width: 110px;   
+        z-index: 1000;  
+        cursor: pointer; /* 마우스 올리면 클릭 가능한 손가락 모양 */
+    }
+    
+    /* 모바일 화면에서는 로고 작게 조절 */
+    @media (max-width: 640px) {
+        .company-logo {
+            width: 80px;
+            top: 60px;
+            right: 10px; 
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
+# -------------------------------------------------------------------
+
+# --- 🖼️ [추가] 제작사 로고 화면에 띄우기 (HTML) ---
+# 포털 저장소에 'company_logo.png' 파일이 있어야 합니다.
+comp_img_base64 = get_base64_of_bin_file("company_logo.png") 
+
+if comp_img_base64:
+    st.markdown(
+        f"""
+        <a href="http://www.iptob.co.kr/" target="_blank" title="(주)아이피투비 홈페이지로 이동">
+            <img src="data:image/png;base64,{comp_img_base64}" class="company-logo" alt="(주)아이피투비 로고">
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+# -------------------------------------------------------------
+
+
 # --- 2. 메인 화면 헤더 ---
-st.title("🏢 사내 통합 업무 포털")
+# 로고와 겹치지 않게 제목을 살짝 왼쪽으로 붙입니다.
+st.title("🏢 업무 도구 포털")
 st.markdown("---")
 
 st.markdown("""
 ### 👋 환영합니다!
-이곳은 업무 효율을 높이기 위해 제작된 사내 도구 모음집(Toolbox)입니다.  
-필요한 작업을 선택하시면 새 창에서 해당 프로그램이 실행됩니다. 
+이곳은 업무 효율을 높이기 위해 제작된 업무 도구 포털입니다.  
+필요한 작업을 선택하시면 해당 프로그램이 실행됩니다. 
 *(보안을 위해 각 프로그램 접속 시 개별 로그인이 필요합니다)*
 """)
 
 st.write("")
 st.write("")
 
-# --- 3. 프로그램 링크 카드 섹션 ---
-# 한 줄에 3개씩 배치하기 위해 화면을 3등분(col1, col2, col3) 합니다.
+# --- 3. 프로그램 링크 카드 섹션 (3열 그리드) ---
 col1, col2, col3 = st.columns(3)
 
 # 📦 첫 번째 박스
 with col1:
-    with st.container(border=True): # 테두리가 있는 예쁜 박스 생성
-        st.markdown("### 🌿 1. 녹색인증 챗봇")
+    with st.container(border=True):
+        st.markdown("녹색인증 챗봇")
         st.write("매뉴얼을 기반으로 녹색인증 관련 질의응답을 제공하는 AI 챗봇입니다.")
-        st.write("") # 버튼 위 여백
-        # ⬇️ 앱 1번 주소
-        st.link_button("🚀 챗봇 실행하기", url="https://green-chatbot-56eztzpmyzchahoppzgsmd.streamlit.app/", use_container_width=True)
+        st.write("") 
+        # ⬇️ 실제 앱 1번 주소로 수정하세요
+        st.link_button("실행하기", url="https://green-chatbot-56eztzpmyzchahoppzgsmd.streamlit.app/", use_container_width=True)
 
 # 📦 두 번째 박스
 with col2:
     with st.container(border=True):
-        st.markdown("### 📄 2. 서류검토 Agent")
-        st.write("복잡한 녹색인증 서류를 자동으로 검토하고 필요한 항목을 체크해 줍니다.")
+        st.markdown("서류검토 도우미")
+        st.write("기업이 제출한 서류를 검토하고 보완 요청 항목을 체크해 줍니다.")
         st.write("") 
-        # ⬇️ 앱 2번 주소
-        st.link_button("🚀 서류검토 실행하기", url="https://your-app2-url.streamlit.app", use_container_width=True)
+        # ⬇️ 실제 앱 2번 주소로 수정하세요
+        st.link_button("실행하기", url="https://your-app2-url.streamlit.app", use_container_width=True)
 
 # 📦 세 번째 박스
 with col3:
     with st.container(border=True):
-        st.markdown("### 🧾 3. 매출전표 자동화")
-        st.write("흩어져 있는 매출전표 PDF 데이터를 취합하고 엑셀로 깔끔하게 정리해 줍니다.")
+        st.markdown("매출전표 정리")
+        st.write("매출전표를 분리하고, 파일명을 정리")
         st.write("") 
-        # ⬇️ 앱 3번 주소
-        st.link_button("🚀 매출전표 정리 실행", url="https://sales-slip-9ahwfpatcrza7yxe6wnaxs.streamlit.app/", use_container_width=True)
-
-# 💡 나중에 4번째, 5번째 프로그램이 생기면?
-# 아래처럼 빈 줄을 하나 넣고 새로운 컬럼을 만들어서 추가하시면 됩니다!
-# st.write("")
-# col4, col5, col6 = st.columns(3)
-# with col4:
-#     with st.container(border=True):
-#         ...
+        # ⬇️ 실제 앱 3번 주소로 수정하세요
+        st.link_button("실행하기", url="https://sales-slip-9ahwfpatcrza7yxe6wnaxs.streamlit.app/", use_container_width=True)
 
 st.markdown("---")
-st.caption("© 2026 업무 자동화 시스템. All rights reserved.")
+
+# --- 4. 💡 [수정] 카피라이트 설정 섹션 ---
+# 이 부분을 개발자나 기업명에 맞게 고치시면 됩니다.
+
+st.caption("© 2026 (주)아이피투비. All rights reserved.") # 기본 형태
+# st.caption("© 2026. 개발자 홍길동. 연락처: 010-XXXX-XXXX") # 다른 형태 예시
+# st.caption("Developed by IPTOB Dev Team.") # 또 다른 형태 예시
