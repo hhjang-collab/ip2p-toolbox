@@ -14,7 +14,7 @@ def get_base64_of_bin_file(bin_file):
 st.set_page_config(
     page_title="업무 도구 포털",
     page_icon="🏢",
-    layout="wide" # 카드를 위해 wide 유지
+    layout="centered"
 )
 
 # --- 🎨 통합 CSS (제작사 로고 전용 CSS 포함) ---
