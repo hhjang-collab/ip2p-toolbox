@@ -93,7 +93,7 @@ with col2:
         st.markdown("<p style='text-align: center; color: gray; font-size: 0.95em;'>제출한 서류를 검토하고, 보완요청 메세지를 작성</p>", unsafe_allow_html=True)
         st.write("") 
         # ⬇️ 2번 앱은 주소가 나오면 나중에 이곳을 수정해 주세요!
-        st.link_button("실행하기", url="https://your-app2-url.streamlit.app", use_container_width=True)
+        st.link_button("실행하기", url="https://green-check-jakrw5thqjgo3qxgb8ffwc.streamlit.app", use_container_width=True)
 
 # 📦 세 번째 박스
 with col3:
